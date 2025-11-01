@@ -1,0 +1,12 @@
+name: assignment_one_dart_amanta_suraiya_2110965
+description: A Dart assignment project for CSE464
+version: 1.0.0
+
+environment:
+  sdk: ">=2.19.0 <3.0.0"
+
+dependencies:
+# Add any packages here if needed
+
+dev_dependencies:
+  test: ^1.22.0

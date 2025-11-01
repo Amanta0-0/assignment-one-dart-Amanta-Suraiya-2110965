@@ -3,27 +3,29 @@
 
 import 'dart:math';
 
-void main() {
-  List<String> students = ["Alice", "Bob", "Charlie", "Diana", "Eve"];
-  Map<String, int> scores = {};
+// Global variables for testing
+List<String> students = ["Alice", "Bob", "Charlie", "Diana", "Eve"];
+Map<String, int> scores = {};
+String highestStudent = '';
+String lowestStudent = '';
+int highestScore = 0;
+int lowestScore = 0;
+double average = 0.0;
 
-  // Use a fixed seed for reproducible results during testing
-  Random rng = Random(42);
+// Function to assign random scores and compute stats
+void assignScores() {
+  Random rng = Random(42); // fixed seed for reproducibility
 
-  // Assign random scores between 60 and 100 inclusive
+  // Assign scores 60..100
   for (var student in students) {
-    int score = rng.nextInt(41) + 60; // 0..40 + 60 => 60..100
-    scores[student] = score;
+    scores[student] = rng.nextInt(41) + 60;
   }
 
-  print('Assigned scores:');
-  scores.forEach((k, v) => print('  $k : $v'));
-
-  // Find highest and lowest
-  String highestStudent = scores.keys.first;
-  String lowestStudent = scores.keys.first;
-  int highestScore = scores[highestStudent]!;
-  int lowestScore = scores[lowestStudent]!;
+  // Initialize highest/lowest
+  highestStudent = students.first;
+  lowestStudent = students.first;
+  highestScore = scores[highestStudent]!;
+  lowestScore = scores[lowestStudent]!;
 
   int total = 0;
   scores.forEach((name, score) {
@@ -38,14 +40,12 @@ void main() {
     }
   });
 
-  double average = total / scores.length;
+  average = total / scores.length;
+}
 
-  print('\nHighest: $highestStudent with $highestScore');
-  print('Lowest: $lowestStudent with $lowestScore');
-  print('Average score: ${average.toStringAsFixed(2)}');
-
-  // Categorize with switch (using tens digit)
-  print('\nCategories:');
+// Optional: categorize student scores
+Map<String, String> categorizeStudents() {
+  Map<String, String> categories = {};
   scores.forEach((name, score) {
     String category;
     switch (score ~/ 10) {
@@ -62,6 +62,24 @@ void main() {
       default:
         category = 'Needs Improvement';
     }
-    print('  $name ($score): $category');
+    categories[name] = category;
+  });
+  return categories;
+}
+
+void main() {
+  assignScores();
+
+  print('Assigned scores:');
+  scores.forEach((k, v) => print('  $k : $v'));
+
+  print('\nHighest: $highestStudent with $highestScore');
+  print('Lowest: $lowestStudent with $lowestScore');
+  print('Average score: ${average.toStringAsFixed(2)}');
+
+  print('\nCategories:');
+  var categories = categorizeStudents();
+  categories.forEach((name, category) {
+    print('  $name (${scores[name]}): $category');
   });
 }
